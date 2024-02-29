@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SEO Rank Checker 2.0</title>
+</head>
+<body>
+  <h1>SEO Rank Checker</h1>
+  <label for="keyword">Enter Keyword:</label>
+  <input type="text" id="keyword" placeholder="Type your keyword">
+  <button onclick="checkRank()">Check Rank</button>
+
+  <script>
+    function checkRank() {
+      const keyword = document.getElementById('keyword').value;
+      if (keyword.trim() === '') {
+        console.log('Please enter a keyword');
+        return;
+      }
+
+      // Use an API endpoint or directly query the search engine (Note: This is a simplified example)
+      const apiUrl = `https://www.googleapis.com/customsearch/v1?q=${encodeURIComponent(keyword)}&key=YOUR_API_KEY&cx=YOUR_CUSTOM_SEARCH_ENGINE_ID`;
+
+      // Fetch search results
+      fetch(apiUrl)
+        .then(response => response.json())
+        .then(data => {
+          // Display search results in the console
+          console.log('Search Results:', data);
+          
+          // Extract and display rank information
+          const items = data.items || [];
+          const rank = items.findIndex(item => item.link.includes('yourwebsite.com'));
+          
+          if (rank !== -1) {
+            console.log(`Your website is ranked ${rank + 1} for the keyword "${keyword}"`);
+          } else {
+            console.log(`Your website is not found in the search results for the keyword "${keyword}"`);
+          }
+        })
+        .catch(error => console.error('Error fetching data:', error));
+    }
+  </script>
+</body>
+</html>
